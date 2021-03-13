@@ -1,0 +1,6 @@
+Pipfile.lock
+setenvs.sh
+.vscode/launch.json
+*.html
+*.txt
+__pycache__/*
