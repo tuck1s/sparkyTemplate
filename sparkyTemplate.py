@@ -61,13 +61,17 @@ def write_headers_to_template(url, api_key, args):
     Write headers to SparkPost template with specified endpoint URL, API Key, and search params.
     If update_published is true, we always fetch the *published* version and work on that
     """
-    qp = {'draft' : False} if args.update_published == True else {}
+    if args.update_published == True:
+        qp = {'draft' : False} # fetch published version
+    else:
+        qp = {'draft' : True} # fetch draft version
     # id is passed in path
     response = api_get(urljoin(url, args.id), api_key, qp)
     if response.status_code == 200:
         template = response.json().get('results')
         if template:
-            stderr_report('Working on', 'Published' if template.get('published') else 'Draft')
+            version = 'Published' if template.get('published') else 'Draft'
+            stderr_report('Working on', version)
             stderr_report('Previous headers', template['content'].get('headers'))
             if args.headers:
                 template['content']['headers'] = args.headers

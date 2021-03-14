@@ -97,6 +97,8 @@ Special options:
 ```
 
 ### Write headers
+This provides a feature that is not currently surfaced in the SparkPost web UI.
+
 ```
 ./sparkyTemplate.py write_headers -h
 usage: sparkyTemplate.py write_headers [-h] [--update_published {False,True}] [--headers HEADERS] id
@@ -111,6 +113,18 @@ optional arguments:
                         set to false, it will result in an update to the draft version.
   --headers HEADERS     JSON-formatted string with headers to add, e.g. {"CC": "{{my_cc}}"}
 ```
+
+To make your command-line shell pass the HEADERS value literally, enclose in single quotes, e.g.
+
+```
+./sparkyTemplate.py write_headers avocado-goodness --headers  '{"cats": "boots", "dogs": "shoes"}'
+```
+
+When `--update_published=true`, the tool reads the template *published* content, then writes it back to the *published* content.
+
+When omitted (or set to `false`), the tool will read the template *draft* content and write it back to the *draft* content.
+
+> Tip: you can promote draft content to published content via the SparkPost web UI.
 
 ## See Also
 
