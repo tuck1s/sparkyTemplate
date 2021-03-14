@@ -132,7 +132,7 @@ def stderr_report(key, val, **kwargs):
 # Main code
 # -----------------------------------------------------------------------------------------
 p = argparse.ArgumentParser(description='SparkPost template update utility')
-sub_p = p.add_subparsers(help='sub-command help')
+sub_p = p.add_subparsers(help='Sub-command help')
 
 p_list = sub_p.add_parser('list', help='List all templates in this account')
 add_boolean_args(p_list, [

@@ -3,9 +3,18 @@
 [Sign up](https://app.sparkpost.com/join?plan=free-0817?src=Social%20Media&sfdcid=70160000000pqBb&pc=GitHubSignUp&utm_source=github&utm_medium=social-media&utm_campaign=github&utm_content=sign-up) for a SparkPost account and visit our [Developer Hub](https://developers.sparkpost.com) for even more content.
 
 # sparkyTemplate
-[![Build Status]()
+[![Build Status](https://travis-ci.com/tuck1s/sparkyTemplate.svg?branch=main)](https://travis-ci.com/tuck1s/sparkyTemplate)
 
-Command-line
+Command-line tool for working with SparkPost templates, supporting the following options:
+- List templates in your account (CSV output) similar to the SparkPost Web UI list / "save as CSV" option
+
+- Retrieve a template by ID. The output defaults to JSON. You can also write the content into separate text, HTML, AMP HTML files which is useful for working on templates offline.
+
+- Update the headers. This option is provided here, and not currently in the SparkPost web UI.
+
+Updating the headers is useful, for example, if you wish to include recipients in "CC".
+
+Not yet included: Create and Delete functions, because the SparkPost web UI already supports these.
 
 ## Easy installation
 
@@ -25,10 +34,91 @@ _Note: In the above commands, you may need to run `pip3` instead of `pip`._
 
 ## Pre-requisites
 
-## Examples
+Set the following environment variables. Note these are case-sensitive.
 
+```
+SPARKPOST_HOST (optional)
+    The URL of the SparkPost API service you're using. Defaults to https://api.sparkpost.com.
+
+SPARKPOST_API_KEY
+    API key on your SparkPost account, with Templates: Read/Write rights.
+```
+
+## Usage
+
+```
+./sparkyTemplate.py -h
+usage: sparkyTemplate.py [-h] {list,retrieve,write_headers} ...
+
+SparkPost template update utility
+
+positional arguments:
+  {list,retrieve,write_headers}
+                        sub-command help
+    list                List all templates in this account
+    retrieve            retrieve a template
+    write_headers       Write headers to an existing template (overwriting any existing headers)
+
+optional arguments:
+  -h, --help            show this help message and exit
+```
+
+The sub-commands `list`, `retrieve`, `write_headers` each have their own usage help.
+
+### List
+```
+./sparkyTemplate.py list -h
+usage: sparkyTemplate.py list [-h] [--draft {False,True}] [--shared_with_subaccounts {False,True}]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --draft {False,True}  If true, returns the draft templates. If false, returns the published templates. When not provided, returns the most recently edited templates (draft or
+                        published).
+  --shared_with_subaccounts {False,True}
+                        If true, returns only shared templates. If false, returns only non-shared templates.
+```
+
+### Retrieve
+
+```
+./sparkyTemplate.py retrieve -h
+usage: sparkyTemplate.py retrieve [-h] [--draft {False,True}] [--outfile OUTFILE] id
+
+positional arguments:
+  id                    Identity of the template
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --draft {False,True}  If true, returns the draft template. If false, returns the published template. When not provided, returns the most recently edited template (draft or
+                        published).
+
+Special options:
+  --outfile OUTFILE     Instead of printing JSON (default), store each content part to files OUTFILE.txt, .html, .amp.html
+```
+
+### Write headers
+```
+./sparkyTemplate.py write_headers -h
+usage: sparkyTemplate.py write_headers [-h] [--update_published {False,True}] [--headers HEADERS] id
+
+positional arguments:
+  id                    Identity of the template
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --update_published {False,True}
+                        An existing published version can be overwritten directly by setting the update_published query parameter to true. If the query param is not passed or
+                        set to false, it will result in an update to the draft version.
+  --headers HEADERS     JSON-formatted string with headers to add, e.g. {"CC": "{{my_cc}}"}
+```
 
 ## See Also
-[SparkPost Developer Hub](https://developers.sparkpost.com/)
 
+1. [Header template object](https://developers.sparkpost.com/api/templates/#header-template-object)
+
+1. [Header notes](https://developers.sparkpost.com/api/templates/#header-header-notes)
+
+1. [Update a published template](https://developers.sparkpost.com/api/templates/#templates-put-update-a-published-template)
+
+1. [SparkPost Developer Hub](https://developers.sparkpost.com/)
 
