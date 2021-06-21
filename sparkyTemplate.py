@@ -172,4 +172,8 @@ args = p.parse_args()
 api_key = getenv_check('SPARKPOST_API_KEY')                      # API key is mandatory
 host = host_cleanup(getenv('SPARKPOST_HOST', default='api.sparkpost.com'))
 url = host + '/api/v1/templates/'
-args.func(url, api_key, args)
+
+if 'func' in vars(args):
+    args.func(url, api_key, args)
+else:
+    p.print_help()
